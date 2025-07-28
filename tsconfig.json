@@ -1,0 +1,22 @@
+{
+	"include": [ "*", "scripts/*" ],
+	"compilerOptions": {
+		"noEmit": true,
+		"lib": [ "es2022" ],
+		"types": [ "node", "@total-typescript/ts-reset" ],
+		"target": "es2022",
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"checkJs": true,
+		"strict": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"exactOptionalPropertyTypes": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"skipLibCheck": true
+	}
+}
