@@ -1,16 +1,16 @@
 {
-	"name": "typescript-template",
+	"name": "tulid",
 	"version": "0.0.0",
-	"description": "remember to update urls in this file",
+	"description": "Make and decode ULIDs.",
 	"keywords": [],
-	"homepage": "https://github.com/samualtnorman/typescript-template#readme",
+	"homepage": "https://github.com/samualtnorman/tulid#readme",
 	"bugs": {
-		"url": "https://github.com/samualtnorman/typescript-template/issues",
+		"url": "https://github.com/samualtnorman/tulid/issues",
 		"email": "me@samual.uk"
 	},
 	"license": "MIT",
 	"author": "Samual Norman <me@samual.uk> (https://samual.uk/)",
-	"repository": "github:samualtnorman/typescript-template",
+	"repository": "github:samualtnorman/tulid",
 	"type": "module",
 	"dependencies": {
 		"@samual/types": "^0.0.1"
