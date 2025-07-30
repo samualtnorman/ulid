@@ -4,4 +4,4 @@ rm -rf dist
 ./rollup.config.js
 scripts/emit-dts.sh
 scripts/emit-package-json.js
-cp licence readme.md dist
+cp LICENSE readme.md dist
