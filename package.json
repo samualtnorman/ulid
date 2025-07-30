@@ -3,14 +3,14 @@
 	"version": "0.0.0",
 	"description": "Make and decode ULIDs.",
 	"keywords": [],
-	"homepage": "https://github.com/samualtnorman/tiny-ulid#readme",
+	"homepage": "https://github.com/samualtnorman/ulid#readme",
 	"bugs": {
-		"url": "https://github.com/samualtnorman/tiny-ulid/issues",
+		"url": "https://github.com/samualtnorman/ulid/issues",
 		"email": "me@samual.uk"
 	},
 	"license": "MIT",
 	"author": "Samual Norman <me@samual.uk> (https://samual.uk/)",
-	"repository": "github:samualtnorman/tiny-ulid",
+	"repository": "github:samualtnorman/ulid",
 	"type": "module",
 	"dependencies": {
 		"@samual/types": "^0.0.1"
