@@ -1,0 +1,58 @@
+name: Publish
+on: { push: { branches: [ main ] }, release: { types: [ created ] } }
+
+jobs:
+  jsr:
+    name: JSR
+    runs-on: ubuntu-latest
+    permissions: { contents: read, id-token: write }
+
+    steps:
+    - { name: Checkout, uses: actions/checkout@v4 }
+    - { name: Setup pnpm, uses: pnpm/action-setup@v4, with: { version: ^10, run_install: true } }
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4
+      with: { node-version: ^20.10 || ^22 || >=24, cache: pnpm }
+
+    - run: git config --global user.email github-action@users.noreply.github.com
+    - run: git config --global user.name "Github Action"
+
+    - if: github.event_name == 'push'
+      run: scripts/version-dev.js
+
+    - run: scripts/jsr.sh
+    - { run: git init && ../node_modules/.bin/jsr publish --allow-dirty, working-directory: dist }
+
+  npm:
+    name: NPM
+    runs-on: ubuntu-latest
+    permissions: { contents: read, id-token: write }
+
+    steps:
+    - { name: Checkout, uses: actions/checkout@v4 }
+    - { name: Setup pnpm, uses: pnpm/action-setup@v4, with: { version: ^10, run_install: true } }
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4
+      with: { node-version: ^20.10 || ^22 || >=24, cache: pnpm, registry-url: https://registry.npmjs.org }
+
+    - run: git config --global user.email github-action@users.noreply.github.com
+    - run: git config --global user.name "Github Action"
+
+    - if: github.event_name == 'push'
+      run: scripts/version-dev.js
+
+    - run: scripts/npm.sh
+
+    - name: Publish dev
+      if: github.event_name == 'push'
+      run: pnpm publish --provenance --access public --no-git-checks --tag dev
+      working-directory: dist
+      env: { NODE_AUTH_TOKEN: "${{secrets.NPM_TOKEN}}" }
+
+    - name: Publish release
+      if: github.event_name == 'release'
+      run: pnpm publish --provenance --access public --no-git-checks
+      working-directory: dist
+      env: { NODE_AUTH_TOKEN: "${{secrets.NPM_TOKEN}}" }
