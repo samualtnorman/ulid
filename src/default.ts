@@ -90,7 +90,7 @@ export const getUlidBufferTime = (buffer: UlidBuffer): number => {
 	return (dataView.getUint16(0) * (2 ** (8 * 4))) + dataView.getUint32(2)
 }
 
-type MakeUlidBufferOptions = { buffer: UlidBuffer, time: number }
+export type MakeUlidBufferOptions = { buffer: UlidBuffer, time: number }
 
 /**
  * Make a `UlidBuffer`.
