@@ -1,9 +1,9 @@
-# Tulid
+# Tiny ULID
 Make and decode [ULID](https://github.com/ulid/spec#readme)s as well as set and read ULID times.
 
 ## Make a ULID
 ```js
-import { makeUlid } from "tulid"
+import { makeUlid } from "tiny-ulid"
 
 const ulid = makeUlid()
 
@@ -12,7 +12,7 @@ console.log(ulid) // "01K1BB2NM2JQ01NCZRW8B8M894"
 
 ## Decode a ULID and read its date
 ```js
-import { toUlid, decodeUlid, getUlidBufferTime } from "tulid"
+import { toUlid, decodeUlid, getUlidBufferTime } from "tiny-ulid"
 
 const ulid = toUlid("01ARZ3NDEKTSV4RRFFQ69G5FAV")
 // Decode to a 16-byte ArrayBuffer
@@ -25,7 +25,7 @@ console.log(date.toLocaleString()) // "31/07/2016, 00:54:10"
 
 ## Generate a ULID as an `ArrayBuffer` first then stringify it
 ```js
-import { makeUlidBuffer, makeUlid } from "tulid"
+import { makeUlidBuffer, makeUlid } from "tiny-ulid"
 
 const ulidBuffer = makeUlidBuffer()
 

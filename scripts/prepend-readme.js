@@ -8,7 +8,7 @@ if (!(readmePath && targetPath))
 
 const readme = readFileSync(readmePath, { encoding: `utf8` })
 	.trim()
-	.replaceAll(`{PACKAGE_NAME}`, `@sn/tulid`)
+	.replaceAll(`{PACKAGE_NAME}`, `@sn/ulid`)
 	.replaceAll(`*/`, `*\u200D/`)
 	.replaceAll(`\n`, `\n * `)
 
