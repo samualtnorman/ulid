@@ -107,4 +107,8 @@ export default {
 console.log(makeUlid())
 ```
 
-The "Treeshaken" column represents using just Rollup's built in tree shaking. The "Minified" column represents using Rollup's built in tree shaking plus [Terser](https://terser.org/)'s minification. The "Gzipped" column represents using the default [Gzip](https://en.wikipedia.org/wiki/Gzip) level (6) on the output produced from the "Minified" column. Like I say above, these types of benchmarks are never apples to apples due to different packages having different features to each other. These numbers are only relevant to you if you only care about the smallest ULID string generation and nothing else.
+The "Treeshaken" column represents using just Rollup's built in tree shaking.
+The "Minified" column represents using Rollup's built in tree shaking plus [Terser](https://terser.org/)'s minification.
+The "Gzipped" column represents using the default [Gzip](https://en.wikipedia.org/wiki/Gzip) level (6) on the output produced from the "Minified" column.
+Like I say above, these types of benchmarks are never apples to apples due to different packages having different features to each other.
+These numbers are only relevant to you if you only care about the smallest ULID string generation and nothing else.
