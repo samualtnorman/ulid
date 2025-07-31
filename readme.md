@@ -36,7 +36,14 @@ console.log(`Created user with id ${makeUlid({ buffer: ulidBuffer })}`) // "Crea
 ```
 
 ## Performance
-This package is about 12x faster than [ulid](https://www.npmjs.com/package/ulid) and [ulidx](https://www.npmjs.com/package/ulidx).
+This package is at the time of writing about 12x faster than [ulid](https://www.npmjs.com/package/ulid) and [ulidx](https://www.npmjs.com/package/ulidx).
+
+|                    Package                   |  Time   |
+|----------------------------------------------|---------|
+| [ulid](https://www.npmjs.com/package/ulid)   | 23.266s |
+| [ulidx](https://www.npmjs.com/package/ulidx) | 23.547s |
+| **tiny-ulid**                                |  1.865s |
+
 I got these numbers with this script:
 ```js
 // Uncomment one of these
@@ -65,8 +72,39 @@ console.log(ulid)
 I ran it 4 times, discarded the first result and averaged together the last 3. Bear in mind, these results are specific to my machine and will be different on yours.
 These types of benchmarks are also never apples to apples. All 3 packages have different bells and whistles. This benchmark is only relevant to you if you only care about fast ULID string generation and nothing else.
 
-|                    Package                   |  Time   |
-|----------------------------------------------|---------|
-| [ulid](https://www.npmjs.com/package/ulid)   | 23.266s |
-| [ulidx](https://www.npmjs.com/package/ulidx) | 23.547s |
-| **tiny-ulid**                                |  1.865s |
+## Bundle Size
+This package is at the time of writing the smallest way to generate ULIDs (in JavaScript).
+
+|                    Package                   | Treeshaken |  Minified  |  Gzipped   |
+|----------------------------------------------|------------|------------|------------|
+| [ulid](https://www.npmjs.com/package/ulid)   | 4423 bytes | 1702 bytes |  874 bytes |
+| [ulidx](https://www.npmjs.com/package/ulidx) | 6975 bytes | 2762 bytes | 1264 bytes |
+| **tiny-ulid**                                | 1059 bytes |  488 bytes |  354 bytes |
+
+I got these numbers with this [Rollup](https://rollupjs.org/) config and input:
+
+```js
+import { nodeResolve } from "@rollup/plugin-node-resolve"
+import terser from "@rollup/plugin-terser"
+
+export default {
+	input: `main.js`,
+	output: { dir: `dist` },
+	plugins: [
+		nodeResolve(),
+		// Uncomment to test minifying
+		// terser({ compress: { passes: Infinity }, ecma: 2020 })
+	]
+}
+```
+
+```js
+// Uncomment one of these
+// import { ulid as makeUlid } from "ulid"
+// import { ulid as makeUlid } from "ulidx"
+// import { makeUlid } from "tiny-ulid"
+
+console.log(makeUlid())
+```
+
+The "Treeshaken" column represents using just Rollup's built in tree shaking. The "Minified" column represents using Rollup's built in tree shaking plus [Terser](https://terser.org/)'s minification. The "Gzipped" column represents using the default [Gzip](https://en.wikipedia.org/wiki/Gzip) level (6) on the output produced from the "Minified" column. Like I say above, these types of benchmarks are never apples to apples due to different packages having different features to each other. These numbers are only relevant to you if you only care about the smallest ULID string generation and nothing else.
