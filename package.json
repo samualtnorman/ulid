@@ -2,7 +2,9 @@
 	"name": "tiny-ulid",
 	"version": "0.0.0",
 	"description": "Make and decode ULIDs.",
-	"keywords": [],
+	"keywords": [
+		"ulid"
+	],
 	"homepage": "https://github.com/samualtnorman/ulid#readme",
 	"bugs": {
 		"url": "https://github.com/samualtnorman/ulid/issues",
