@@ -90,7 +90,7 @@ export const getUlidBufferTime = (buffer: UlidBuffer): number => {
 	return (dataView.getUint16(0) * (2 ** (8 * 4))) + dataView.getUint32(2)
 }
 
-export type MakeUlidBufferOptions = { buffer: UlidBuffer, time: number }
+export type MakeUlidBufferOptions = { ulidBuffer: UlidBuffer, time: number }
 
 /**
  * Make a `UlidBuffer`.
@@ -106,19 +106,19 @@ export type MakeUlidBufferOptions = { buffer: UlidBuffer, time: number }
  * ```
  */
 export const makeUlidBuffer = (
-	{ buffer = makeEmptyUlidBuffer(), time = Date.now() }: LaxPartial<MakeUlidBufferOptions> = {}
+	{ ulidBuffer = makeEmptyUlidBuffer(), time = Date.now() }: LaxPartial<MakeUlidBufferOptions> = {}
 ): UlidBuffer => {
-	setUlidBufferTime(buffer, time)
-	crypto.getRandomValues(new Uint8Array(buffer, 6))
+	setUlidBufferTime(ulidBuffer, time)
+	crypto.getRandomValues(new Uint8Array(ulidBuffer, 6))
 
-	return buffer
+	return ulidBuffer
 }
 
 /** Make a [ULID](https://github.com/ulid/spec#readme) string. */
 export const makeUlid = (
-	{ time = Date.now(), buffer = makeUlidBuffer({ time }) }: LaxPartial<MakeUlidBufferOptions> = {}
+	{ time = Date.now(), ulidBuffer = makeUlidBuffer({ time }) }: LaxPartial<MakeUlidBufferOptions> = {}
 ): Ulid => {
-	const dataView = new DataView(buffer)
+	const dataView = new DataView(ulidBuffer)
 	let result = CROCKFORD_BASE32[dataView.getUint8(0) >> 5]!
 
 	for (let bitOffset = 3; bitOffset < 123; bitOffset += 5) {
