@@ -15,7 +15,8 @@
 	"repository": "github:samualtnorman/ulid",
 	"type": "module",
 	"dependencies": {
-		"@samual/types": "^0.0.1"
+		"@samual/types": "^0.0.1",
+		"consola": "^3.4.2"
 	},
 	"devDependencies": {
 		"@babel/plugin-syntax-typescript": "^7.27.1",
@@ -36,5 +37,8 @@
 		"node": "^20.10 || ^22 || >=24",
 		"pnpm": "^10"
 	},
-	"private": true
+	"private": true,
+	"bin": {
+		"ulid": "bin/ulid.js"
+	}
 }
