@@ -156,3 +156,41 @@ export const decodeUlid = (ulid: Ulid): UlidBuffer => {
 
 	return ulidBuffer
 }
+
+export const incrementUlidBuffer = (ulidBuffer: UlidBuffer, { throwOnOverflow = false }: LaxPartial<{ throwOnOverflow: boolean }> = {}): void => {
+	const dataView = new DataView(ulidBuffer)
+
+	dataView.setBigUint64(8, dataView.getBigUint64(8) + 1n)
+
+	if (!dataView.getBigUint64(8)) {
+		dataView.setUint16(6, dataView.getUint16(6) + 1)
+
+		if (throwOnOverflow && !dataView.getUint16(6))
+			throw Error(`Overflow when incrementing ULID buffer`)
+	}
+}
+
+export const cloneUlidBuffer = (ulidBuffer: UlidBuffer): UlidBuffer => ulidBuffer.slice() as UlidBuffer
+
+export const makeMonotonicallyIncrementingUlidBufferFunction = (
+	{ mitigateOverflow = true }: LaxPartial<{ mitigateOverflow: boolean }> = {}
+): () => UlidBuffer => {
+	let ulidBuffer: UlidBuffer
+
+	return () => {
+		if (ulidBuffer && getUlidBufferTime(ulidBuffer) >= Date.now()) {
+			incrementUlidBuffer(ulidBuffer)
+
+			return cloneUlidBuffer(ulidBuffer)
+		}
+
+		ulidBuffer = makeUlidBuffer()
+
+		setUlidBufferTime(ulidBuffer)
+
+		if (mitigateOverflow)
+			(new Uint8Array(ulidBuffer))[6]! &= 0b0111_1111
+
+		return cloneUlidBuffer(ulidBuffer)
+	}
+}
