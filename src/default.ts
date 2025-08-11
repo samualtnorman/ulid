@@ -179,7 +179,7 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = (
 
 	return () => {
 		if (ulidBuffer && getUlidBufferTime(ulidBuffer) >= Date.now()) {
-			incrementUlidBuffer(ulidBuffer)
+			incrementUlidBuffer(ulidBuffer, { throwOnOverflow: true })
 
 			return cloneUlidBuffer(ulidBuffer)
 		}
