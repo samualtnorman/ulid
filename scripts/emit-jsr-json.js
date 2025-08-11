@@ -14,9 +14,10 @@ const imports = Object.fromEntries(Object.entries(dependencies).map(
 	([ name, version ],) => [ name, `${name in ConvertToJsr ? `jsr:${ConvertToJsr[name]}` : `npm:${name}`}@${version}` ]
 ))
 
-writeFileSync(
-	"dist/jsr.json",
-	JSON.stringify({ name: `@sn/ulid`, version, license, exports: { ".": "./default.ts" }, imports }, undefined, "\t")
-)
+writeFileSync("dist/jsr.json", JSON.stringify(
+	{ name: `@sn/ulid`, version, license, exports: { ".": "./default.ts", "./monotonic": "./monotonic.ts" }, imports },
+	undefined,
+	"\t"
+))
 
 process.exit()

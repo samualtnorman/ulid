@@ -40,5 +40,9 @@
 	"private": true,
 	"bin": {
 		"ulid": "bin/ulid.js"
+	},
+	"exports": {
+		".": "./default.js",
+		"./monotonic": "./monotonic.js"
 	}
 }
