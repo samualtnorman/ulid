@@ -185,7 +185,6 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = (
 		}
 
 		ulidBuffer = makeUlidBuffer()
-
 		setUlidBufferTime(ulidBuffer)
 
 		if (mitigateOverflow)
