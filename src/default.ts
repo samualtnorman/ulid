@@ -1,4 +1,4 @@
-import type { LaxPartial, Brand } from "@samual/types"
+import type { Brand, LaxPartial } from "@samual/types"
 
 const CROCKFORD_BASE32 = `0123456789ABCDEFGHJKMNPQRSTVWXYZ`
 const ULID_REGEX = /^[0-7][\dA-HJKMNP-TV-Z]{25}$/
