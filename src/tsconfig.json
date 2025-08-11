@@ -8,6 +8,7 @@
 		"lib": [ "dom" ],
 		"isolatedDeclarations": true,
 		"checkJs": false,
-		"allowImportingTsExtensions": true
+		"allowImportingTsExtensions": true,
+		"rootDir": "."
 	}
 }
