@@ -77,9 +77,9 @@ This package is at the time of writing the smallest way to generate ULIDs (in Ja
 
 |                    Package                   | Treeshaken |  Minified  |  Gzipped   |
 |----------------------------------------------|------------|------------|------------|
-| [ulid](https://www.npmjs.com/package/ulid)   | 4423 bytes | 1702 bytes |  874 bytes |
-| [ulidx](https://www.npmjs.com/package/ulidx) | 6975 bytes | 2762 bytes | 1264 bytes |
-| **tiny-ulid**                                | 1059 bytes |  488 bytes |  354 bytes |
+| [ulid](https://www.npmjs.com/package/ulid)   | 4449 bytes | 1702 bytes |  874 bytes |
+| [ulidx](https://www.npmjs.com/package/ulidx) | 7001 bytes | 2762 bytes | 1264 bytes |
+| **tiny-ulid**                                | 1109 bytes |  496 bytes |  351 bytes |
 
 I got these numbers with this [Rollup](https://rollupjs.org/) config and input:
 
