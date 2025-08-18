@@ -2,10 +2,16 @@
 import { createConsola } from "consola"
 import { decodeUlid, getUlidBufferTime, makeUlid, toUlid } from "../default"
 import { version } from "../../package.json"
+import { LaxPartial } from "@samual/types"
 
 const consola = createConsola({ stdout: process.stderr })
 const options = new Map<string, string | undefined>
 const commands: string[] = []
+
+const fatal = (message: string) => {
+	consola.fatal(message)
+	process.exit(1)
+}
 
 for (const argument of process.argv.slice(2)) {
 	if (argument[0] == `-`) {
@@ -20,17 +26,24 @@ for (const argument of process.argv.slice(2)) {
 			value = argument.slice(argumentEqualsIndex + 1)
 		}
 
-		if (argument[1] == `-`)
-			options.set(key.slice(2), value)
-		else {
-			for (const option of key.slice(1))
-				options.set(option, value)
+		if (argument[1] == `-`) {
+			const name = key.slice(2)
+
+			if (options.has(name))
+				fatal(`Option --${name} specified twice.`)
+
+			options.set(name, value)
+		} else {
+			for (const name of key.slice(1)) {
+				if (options.has(name))
+					fatal(`Option -${name} specified twice.`)
+
+				options.set(name, value)
+			}
 		}
 	} else {
-		if (options.size) {
-			consola.fatal(`Options must come last.`)
-			process.exit(1)
-		}
+		if (options.size)
+			fatal(`Options must come last.`)
 
 		commands.push(argument)
 	}
@@ -44,58 +57,155 @@ if (commands[0] == `version` || options.has(`version`)) {
 	process.exit()
 }
 
+const poppedOptions = new Set<string>
+let complainedAboutUnrecognisedOptions = false
+
+const popOption = (name: string, { requirePresence = false, requireValue = false }: LaxPartial<{ requirePresence: boolean, requireValue: boolean }> = {}) => {
+	if (complainedAboutUnrecognisedOptions) {
+		consola.error(Error(`Tried to pop option after already complaining`))
+		process.exit(2)
+	}
+
+	if (poppedOptions.has(name)) {
+		consola.error(Error(`Tried to pop option --${name} twice.`))
+		process.exit(2)
+	}
+
+	poppedOptions.add(name)
+
+	if (options.has(name)) {
+		const value = options.get(name)
+
+		if (requireValue && value == undefined)
+			fatal(`Option --${name} missing value.`)
+
+		options.delete(name)
+
+		return value
+	}
+
+	if (requirePresence)
+		fatal(`Option --${name} missing.`)
+}
+
+const popFlagOption = (name: string) => {
+	if (complainedAboutUnrecognisedOptions) {
+		consola.error(Error(`Tried to pop option after already complaining`))
+		process.exit(2)
+	}
+
+	if (poppedOptions.has(name)) {
+		consola.error(Error(`Tried to pop option --${name} twice.`))
+		process.exit(2)
+	}
+
+	poppedOptions.add(name)
+
+	if (options.has(name)) {
+		if (options.get(name) != undefined)
+			fatal(`Option --${name} must not have value.`)
+
+		options.delete(name)
+
+		return true
+	}
+
+	return false
+}
+
+const complainAboutUnrecognisedOptions = () => {
+	complainedAboutUnrecognisedOptions = true
+
+	if (options.size)
+		fatal(`Unknown option: --${options.keys().next().value}.`)
+}
+
 if (commands.length) {
 	if (commands[0] == `get-time`) {
-		if (commands.length < 2) {
-			consola.fatal(`Missing argument.`)
-			process.exit(1)
-		}
+		if (commands.length < 2)
+			fatal(`Missing argument.`)
 
-		if (commands.length > 2) {
-			consola.fatal(`Too many arguments.`)
-			process.exit(1)
-		}
+		if (commands.length > 2)
+			fatal(`Too many arguments.`)
 
 		const ulidBuffer = decodeUlid(toUlid(commands[1]!))
 
 		consola.debug(ulidBuffer)
 
 		const time = getUlidBufferTime(ulidBuffer)
+		const formatOption = popOption(`format`, { requireValue: true })
 
-		let format
+		complainAboutUnrecognisedOptions()
 
-		if (options.has(`format`)) {
-			format = options.get(`format`)
-			options.delete(`format`)
-
-			if (format == undefined) {
-				consola.fatal(`Option --format requires value.`)
-				process.exit(1)
-			}
-		}
-
-		if (format == `locale` || format == undefined) {
+		if (formatOption == `locale` || formatOption == undefined)
 			console.log(new Date(time).toLocaleString())
-		} else if (format == `locale-full`) {
+		else if (formatOption == `locale-full`)
 			console.log(new Date(time).toLocaleString(undefined, { dateStyle: `full`, timeStyle: `full` }))
-		} else if (format == `iso`) {
+		else if (formatOption == `iso`)
 			console.log(new Date(time).toISOString())
-		} else if (format == `epoch-milliseconds`) {
+		else if (formatOption == `epoch-milliseconds`)
 			console.log(String(time))
-		} else {
-			consola.fatal(`Unrecognised format ${JSON.stringify(format)}.`)
-			process.exit(1)
-		}
-	} else {
-		consola.fatal(`Unknown command: ${commands[0]}`,)
+		else
+			fatal(`Unrecognised format ${JSON.stringify(formatOption)}.\nValid formats are "locale", "locale-full", "iso", and "epoch-milliseconds".`)
+
+		process.exit()
 	}
-} else {
-	console.log(makeUlid())
+
+	if (commands[0] == `to-hex`) {
+		if (commands.length < 2)
+			fatal(`Missing argument.`)
+
+		if (commands.length > 2)
+			fatal(`Too many arguments.`)
+
+		const ulidBuffer = decodeUlid(toUlid(commands[1]!))
+
+		consola.debug(ulidBuffer)
+
+		const lowercaseOption = popFlagOption(`lowercase`)
+		const seperator = popOption(`seperator`, { requireValue: true }) ?? ` `
+
+		complainAboutUnrecognisedOptions()
+
+		const result = [ ...new Uint8Array(ulidBuffer) ]
+			.map(byte => {
+				let result = byte.toString(16)
+
+				if (!lowercaseOption)
+					result = result.toUpperCase()
+
+				return result.padStart(2, `0`)
+			})
+			.join(seperator)
+
+		console.log(result)
+		process.exit()
+	}
+
+	if (commands[0] == `to-base64`) {
+		if (commands.length < 2)
+			fatal(`Missing argument.`)
+
+		if (commands.length > 2)
+			fatal(`Too many arguments.`)
+
+		const urlOption = popFlagOption(`url`)
+
+		complainAboutUnrecognisedOptions()
+
+		const ulidBuffer = decodeUlid(toUlid(commands[1]!))
+
+		consola.debug(ulidBuffer)
+
+		const result = Buffer.from(ulidBuffer).toString(urlOption ? `base64url` : `base64`)
+
+		console.log(result)
+		process.exit()
+	}
+
+	fatal(`Unknown command: ${commands[0]}.`)
 }
 
-if (options.size) {
-	consola.fatal(`Unknown option: --${options.keys().next().value}`)
-	process.exit(1)
-}
-
+complainAboutUnrecognisedOptions()
+console.log(makeUlid())
 process.exit()
