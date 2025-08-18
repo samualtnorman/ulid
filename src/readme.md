@@ -42,7 +42,7 @@ This package is at the time of writing about 12x faster than [ulid](https://www.
 |----------------------------------------------|---------|
 | [ulid](https://www.npmjs.com/package/ulid)   | 23.266s |
 | [ulidx](https://www.npmjs.com/package/ulidx) | 23.547s |
-| **tiny-ulid**                                |  1.865s |
+| **Tiny ULID**                                |  1.865s |
 
 I got these numbers with this script:
 ```js
@@ -79,7 +79,7 @@ This package is at the time of writing the smallest way to generate ULIDs (in Ja
 |----------------------------------------------|------------|------------|------------|
 | [ulid](https://www.npmjs.com/package/ulid)   | 4449 bytes | 1702 bytes |  874 bytes |
 | [ulidx](https://www.npmjs.com/package/ulidx) | 7001 bytes | 2762 bytes | 1264 bytes |
-| **tiny-ulid**                                | 1109 bytes |  496 bytes |  351 bytes |
+| **Tiny ULID**                                | 1109 bytes |  496 bytes |  351 bytes |
 
 I got these numbers with this [Rollup](https://rollupjs.org/) config and input:
 
