@@ -177,11 +177,11 @@ export const incrementUlidBuffer = (ulidBuffer: UlidBuffer, { throwOnOverflow = 
 	}
 }
 
-/** @returns A clone of the given {@linkcode UlidBuffer}. */
+/** Clone a {@linkcode UlidBuffer}. */
 export const cloneUlidBuffer = (ulidBuffer: UlidBuffer): UlidBuffer => ulidBuffer.slice() as UlidBuffer
 
 /**
- * @returns A function that generates monotonically incrementing {@linkcode UlidBuffer}s. This means if you generate 2
+ * Make a monotonically incrementing {@linkcode UlidBuffer} generation function. This means if you generate 2
  * `UlidBuffer`s using the returned function within the same millisecond, the next one'll simply be an incremented
  * version of the previous one.
  * @throws If you try to generate another `UlidBuffer` and the previous's random section bytes is all `0xFF`.
