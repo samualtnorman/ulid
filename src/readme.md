@@ -32,7 +32,7 @@ const ulidBuffer = makeUlidBuffer()
 
 database.user.create({ id: new Uint8Array(ulidBuffer), /* … */ })
 
-console.log(`Created user with id ${makeUlid({ buffer: ulidBuffer })}`) // "Created user with id 01K1BBWHP7PMEEAPCGPKW62CTM"
+console.log(`Created user with id ${makeUlid({ ulidBuffer: ulidBuffer })}`) // "Created user with id 01K1BBWHP7PMEEAPCGPKW62CTM"
 ```
 
 ## Performance
