@@ -5,7 +5,7 @@
 		"declaration": true,
 		"outDir": "../dist",
 		"types": [ "node", "@total-typescript/ts-reset", "vitest/importMeta", "babel-plugin-here/env" ],
-		"lib": [ "dom" ],
+		"lib": [ "dom", "ES2023" ],
 		"isolatedDeclarations": true,
 		"checkJs": false,
 		"allowImportingTsExtensions": true,
