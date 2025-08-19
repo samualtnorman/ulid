@@ -1,6 +1,8 @@
 # Tiny ULID
 Make and decode [ULID](https://github.com/ulid/spec#readme)s as well as set and read ULID times.
 
+[Read the docs!](https://jsr.io/@sn/ulid/doc)
+
 ## Examples
 ### Make a ULID
 ```js
