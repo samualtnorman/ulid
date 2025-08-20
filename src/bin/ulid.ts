@@ -265,7 +265,7 @@ try {
 			if (!/^[a-f\d+/-_]+$/i.test(base64))
 				fatal(`Invalid Base64.`)
 
-			if (base64[21] != `A` && base64[21] != `Q` && base64[21] != `g` && base64[21] == `w`)
+			if (base64[21] != `A` && base64[21] != `Q` && base64[21] != `g` && base64[21] != `w`)
 				fatal(`Last character of base64 can only be one of "AQgw".`)
 
 			const buffer = Buffer.from(base64, `base64`)
