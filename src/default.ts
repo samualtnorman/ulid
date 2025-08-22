@@ -121,8 +121,10 @@ export const makeUlidBuffer = ({ ulidBuffer = makeEmptyUlidBuffer(), time = Date
 	return ulidBuffer
 }
 
+const persistedUlidBuffer = makeEmptyUlidBuffer()
+
 /** Make a [ULID](https://github.com/ulid/spec#readme) string that's narrowed to a {@linkcode Ulid}. */
-export const makeUlid = ({ time = Date.now(), ulidBuffer = makeUlidBuffer({ time }) }: LaxPartial<{
+export const makeUlid = ({ time = Date.now(), ulidBuffer = makeUlidBuffer({ time, ulidBuffer: persistedUlidBuffer }) }: LaxPartial<{
 	/** The {@linkcode UlidBuffer} to turn into a {@linkcode Ulid}. @default makeUlidBuffer() */ ulidBuffer: UlidBuffer
 
 	/**
