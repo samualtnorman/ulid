@@ -2,7 +2,7 @@
 	"include": [ "*", "scripts/*" ],
 	"compilerOptions": {
 		"noEmit": true,
-		"lib": [ "ES2023" ],
+		"lib": [ "ES2023", "DOM" ],
 		"types": [ "node", "@total-typescript/ts-reset" ],
 		"target": "es2023",
 		"module": "preserve",
@@ -17,6 +17,7 @@
 		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"allowImportingTsExtensions": true
 	}
 }
