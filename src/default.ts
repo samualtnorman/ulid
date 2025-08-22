@@ -87,6 +87,10 @@ export const getUlidBufferTime = (buffer: UlidBuffer): number => {
 	return (dataView.getUint16(0) * (2 ** (8 * 4))) + dataView.getUint32(2)
 }
 
+const POOL_BYTE_SIZE = 10 * 256
+const pool = new Uint8Array(POOL_BYTE_SIZE)
+let poolOffset = 0
+
 /**
  * Make a {@linkcode UlidBuffer}.
  *
@@ -107,7 +111,12 @@ export const makeUlidBuffer = ({ ulidBuffer = makeEmptyUlidBuffer(), time = Date
 	/** The time in milliseconds that'll be written into the buffer. @default Date.now() */ time: number
 }> = {}): UlidBuffer => {
 	setUlidBufferTime(ulidBuffer, time)
-	crypto.getRandomValues(new Uint8Array(ulidBuffer, 6))
+
+	if (!poolOffset)
+		crypto.getRandomValues(pool)
+
+	new Uint8Array(ulidBuffer, 6).set(pool.slice(poolOffset, poolOffset += 10))
+	poolOffset %= POOL_BYTE_SIZE
 
 	return ulidBuffer
 }
