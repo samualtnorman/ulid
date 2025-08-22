@@ -1,0 +1,20 @@
+diff --git a/package.json b/package.json
+index f38387f17111818ed13dd91baf0ec22e7cfd1028..8601189c55cf802668cfef6ed1eb5225cee1d249 100644
+--- a/package.json
++++ b/package.json
+@@ -3,9 +3,12 @@
+   "version": "1.0.0",
+   "description": "A high-performance ULID (Universally Unique Lexicographically Sortable Identifier) generator using WebAssembly, up to 40x faster than traditional implementations, optimized for backend use.",
+   "type": "module",
+-  "module": "dist/index.esm.js",
+-  "types": "dist/index.d.ts",
+-  "main": "dist/index.umd.js",
++  "exports": {
++    ".": {
++      "default": "./dist/index.esm.js",
++      "types": "./dist/index.d.ts"
++    }
++  },
+   "bin": {
+     "wa-ulid": "./bin/cli.js"
+   },

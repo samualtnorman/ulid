@@ -4,7 +4,7 @@ import { babelPluginHere } from "babel-plugin-here"
 import type { ViteUserConfig } from "vitest/config"
 
 export default {
-	test: { includeSource: [ "src/**/*.ts" ] },
+	test: { includeSource: [ "src/**/*.ts" ], benchmark: { includeSource: [ "src/**/*.ts" ] } },
 	plugins: [
 		{
 			...babel({

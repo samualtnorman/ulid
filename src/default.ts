@@ -214,3 +214,33 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = ({ mitigateOverfl
 		return cloneUlidBuffer(ulidBuffer)
 	}
 }
+
+vitest: if (import.meta.vitest) {
+	const { bench } = import.meta.vitest
+
+	if (process.env.MODE != `benchmark`)
+		break vitest
+
+	bench(`tiny-ulid`, () => {
+		makeUlid()
+	})
+
+	const toBenchmark = await Promise.all(Object.entries({
+		"ulid": import(`ulid`).then(({ ulid }) => ulid),
+		"ulidx": import(`ulidx`).then(({ ulid }) => ulid),
+		"wa-ulid": import(`wa-ulid`).then(async ({ default: init, ulid }) => (await init(), ulid)),
+		"ulid-workers": import(`ulid-workers`).then(({ ulidFactory }) => ulidFactory()),
+		"@ulid/ulid": import(`@ulid/ulid`).then(({ ulid }) => ulid),
+		"@kiosked/ulid": import(`@kiosked/ulid`).then(({ ulid }) => ulid),
+		"@evokegroup/ulid": import(`@evokegroup/ulid`).then(({ ulid }) => ulid),
+		"ulid-generator": import(`ulid-generator`).then(({ ulid }) => ulid as () => string),
+		"@std/ulid": import(`@std/ulid`).then(({ ulid }) => ulid),
+		"@yi/ulid": import(`@yi/ulid`).then(({ generateULID }) => generateULID)
+	} satisfies Record<string, Promise<() => string>>).map(async ([ name, promise ]): Promise<[ string, () => string ]> => [ name, await promise ]))
+
+	for (const [ name, makeUlid ] of toBenchmark) {
+		bench(name, () => {
+			makeUlid()
+		})
+	}
+}

@@ -1,0 +1,3 @@
+patchedDependencies:
+  wa-ulid: patches/wa-ulid.patch
+  ulid-generator: patches/ulid-generator.patch

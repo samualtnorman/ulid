@@ -1,0 +1,14 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 799ab916879190913570c793825673c4035ee45f..9b62bc88ca16dd99ec0e92a852721328bafe569d 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -4,7 +4,7 @@ import { ENCODING } from "./interfaces";
+  * "base32" | "base64" | "Crockford" | "uuid"
+  */
+ export declare const ulid: (options?: {
+-    encode: ENCODING;
+-    monotonic: Boolean;
++    encode?: ENCODING;
++    monotonic?: Boolean;
+ }) => string | null;
+ export type encode = ENCODING;

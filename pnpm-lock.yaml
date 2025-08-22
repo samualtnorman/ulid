@@ -4,6 +4,14 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  ulid-generator:
+    hash: ec3d2ddf5639782fa38ab9f2f44a03d10bd7723c0c6425d0ab7c4dc89b33c343
+    path: patches/ulid-generator.patch
+  wa-ulid:
+    hash: a025c042e11ca07719780f89f62e1d5ad9fd6263de31868c85cd4fc398599b0b
+    path: patches/wa-ulid.patch
+
 importers:
 
   .:
@@ -18,6 +26,12 @@ importers:
       '@babel/plugin-syntax-typescript':
         specifier: ^7.27.1
         version: 7.27.1(@babel/core@7.28.3)
+      '@evokegroup/ulid':
+        specifier: ^1.3.1
+        version: 1.3.1
+      '@kiosked/ulid':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@rollup/plugin-babel':
         specifier: ^6.0.4
         version: 6.0.4(@babel/core@7.28.3)(rollup@4.43.0)
@@ -27,6 +41,9 @@ importers:
       '@samual/rolldown-config':
         specifier: jsr:0.0.1-9a6b6c8
         version: '@jsr/samual__rolldown-config@0.0.1-9a6b6c8(prettier@3.5.3)(rollup@4.43.0)'
+      '@std/ulid':
+        specifier: jsr:1.0.0-rc.4
+        version: '@jsr/std__ulid@1.0.0-rc.4'
       '@total-typescript/ts-reset':
         specifier: ^0.6.1
         version: 0.6.1
@@ -36,6 +53,12 @@ importers:
       '@types/semver':
         specifier: ^7.7.0
         version: 7.7.0
+      '@ulid/ulid':
+        specifier: 0.1.1-alpha.3.0
+        version: 0.1.1-alpha.3.0
+      '@yi/ulid':
+        specifier: jsr:^1.0.1
+        version: '@jsr/yi__ulid@1.0.1'
       babel-plugin-here:
         specifier: ^1.0.2
         version: 1.0.2
@@ -51,9 +74,24 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      ulid:
+        specifier: ^3.0.1
+        version: 3.0.1
+      ulid-generator:
+        specifier: ^0.9.0
+        version: 0.9.0(patch_hash=ec3d2ddf5639782fa38ab9f2f44a03d10bd7723c0c6425d0ab7c4dc89b33c343)
+      ulid-workers:
+        specifier: ^2.1.0
+        version: 2.1.0
+      ulidx:
+        specifier: ^2.4.1
+        version: 2.4.1
       vitest:
         specifier: ^3.2.3
         version: 3.2.3(@types/node@20.10.8)(terser@5.42.0)
+      wa-ulid:
+        specifier: ^1.0.0
+        version: 1.0.0(patch_hash=a025c042e11ca07719780f89f62e1d5ad9fd6263de31868c85cd4fc398599b0b)
 
 packages:
 
@@ -746,6 +784,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@evokegroup/ulid@1.3.1':
+    resolution: {integrity: sha512-SrYHhN1frDzMGQ6XEfU0V5Y5mqfxvvraJebx2Wc664dy1iSyrILncgztwCcnyVHBrb0kNc/vmKtuKkB6fEYcfA==}
+    engines: {node: '>=16'}
+
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
 
@@ -775,6 +817,16 @@ packages:
 
   '@jsr/samual__rolldown-config@0.0.1-9a6b6c8':
     resolution: {integrity: sha512-/X4mVXLy+FEyUxCPw2isOsjrDzcAMyDQC1yT1eGabVtseUBX9NjQ1T6IJ89kIRFqtdZ9IGjCYxHAb2I2OoApeA==, tarball: https://npm.jsr.io/~/11/@jsr/samual__rolldown-config/0.0.1-9a6b6c8.tgz}
+
+  '@jsr/std__ulid@1.0.0-rc.4':
+    resolution: {integrity: sha512-dJPkGZitKk31EOSyP64SAlTXdGPlzu4CXOBIYwq+0zSeATGMjB4ZVgGjrUqUp/YZEUah6XwX1WLc9krGHqQjPw==, tarball: https://npm.jsr.io/~/11/@jsr/std__ulid/1.0.0-rc.4.tgz}
+
+  '@jsr/yi__ulid@1.0.1':
+    resolution: {integrity: sha512-ZPw2DO/uNMhXO9wo9MbLCr6j0nwi++PQU/ps6ghAMojZMQj+AhdRCdquQ6c0uJpJamo1uu4CtyD/ESDoStgRsg==, tarball: https://npm.jsr.io/~/11/@jsr/yi__ulid/1.0.1.tgz}
+
+  '@kiosked/ulid@3.0.0':
+    resolution: {integrity: sha512-ZKt2KIgGHDaGfKt6FjYvCpDvBXZRRoE8b+wDOlAV76aXKpq6ITiSUnPYevR4y55NKDnwCvwOrjWe+aVOCAK8kQ==}
+    hasBin: true
 
   '@napi-rs/wasm-runtime@1.0.3':
     resolution: {integrity: sha512-rZxtMsLwjdXkMUGC3WwsPwLNVqVqnTJT6MNIB6e+5fhMcSCPP0AOsNWuMQ5mdCq6HNjs/ZeWAEchpqeprqBD2Q==}
@@ -1030,6 +1082,18 @@ packages:
   '@types/semver@7.7.0':
     resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
 
+  '@ulid/browser@0.1.1-alpha.3.0':
+    resolution: {integrity: sha512-7q3YFbUkTS7fhnXznmBaGD6lP5qqSJiASjETiI3j60/cF/sV5b3gBhUdZ1zD7FQ95HUVnIvZMMREWmJl6bOcVw==}
+
+  '@ulid/node@0.1.1-alpha.3.0':
+    resolution: {integrity: sha512-Z4x6MBg+6AQtscutQEptmdr5rM3NGgOr4Mu3+6dzJTd6JJNleSXOrUIXhddjxzJK+vE+ym6yGVonVB4YB3xPeQ==}
+
+  '@ulid/shared@0.1.1-alpha.3.0':
+    resolution: {integrity: sha512-81dwviO8KSp7WinX4d5s+Ts6WuE/NzEZwh1cETrRO5YRaO70R6Pr5H3RtcdumBeD/wjeq0VsoJchj6iCmsHGjw==}
+
+  '@ulid/ulid@0.1.1-alpha.3.0':
+    resolution: {integrity: sha512-qI8oOIN75fqgvvnRmO2724mVqNyrQb8joHqHKZ/fTNLliNs5id5e1fDqcKGPBXSNBXcMl3bdxsJQVrHt6gn3sQ==}
+
   '@vitest/expect@3.2.3':
     resolution: {integrity: sha512-W2RH2TPWVHA1o7UmaFKISPvdicFJH+mjykctJFoAkUw+SPTJTGjUNdKscFBrqM7IPnCVu6zihtKYa7TkZS1dkQ==}
 
@@ -1239,6 +1303,9 @@ packages:
     resolution: {integrity: sha512-qQP20ZcG28pYes7bCq3uuvixl1TL1EpJzwLPfoQadSyWk9j2AID66qhW8+aXpRDRFDvDkXFnONsSRhpnnQAupg==}
     hasBin: true
 
+  layerr@3.0.0:
+    resolution: {integrity: sha512-tv754Ki2dXpPVApOrjTyRo4/QegVb9eVFq4mjqp4+NM5NaX7syQvN5BBNfV/ZpAHCEHV24XdUVrBAoka4jt3pA==}
+
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
 
@@ -1430,6 +1497,20 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  ulid-generator@0.9.0:
+    resolution: {integrity: sha512-K9XrMOMW4IDfMknOYs/XRhg5u1aEE2ZENi4/RbtBo/zNs9+ivXi4T7+h89uAYlPLg1wcmkMsvqB0Vi+VQTJY0A==}
+
+  ulid-workers@2.1.0:
+    resolution: {integrity: sha512-D4+5fwPt5FEoGdMQtx5YwRHUZ4SDWSypraDZiXT3Y8U7T0C6h99dXhpWJQScNckoVRU+zi+BDuoBKHAffrn9vg==}
+
+  ulid@3.0.1:
+    resolution: {integrity: sha512-dPJyqPzx8preQhqq24bBG1YNkvigm87K8kVEHCD+ruZg24t6IFEFv00xMWfxcC4djmFtiTLdFuADn4+DOz6R7Q==}
+    hasBin: true
+
+  ulidx@2.4.1:
+    resolution: {integrity: sha512-xY7c8LPyzvhvew0Fn+Ek3wBC9STZAuDI/Y5andCKi9AX6/jvfaX45PhsDX8oxgPL0YFp0Jhr8qWMbS/p9375Xg==}
+    engines: {node: '>=16'}
+
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
@@ -1527,6 +1608,11 @@ packages:
         optional: true
       jsdom:
         optional: true
+
+  wa-ulid@1.0.0:
+    resolution: {integrity: sha512-5JbNOO0D/f/gVA00wJldkTLvrOw/i5Qeb+SbCJRxN4ubUqCKGQrrstA0q1nkZleN15+6Zn0CfA0dFKMZtO6hsw==}
+    engines: {node: '>=20.0.0'}
+    hasBin: true
 
   why-is-node-running@2.3.0:
     resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
@@ -2332,6 +2418,8 @@ snapshots:
   '@esbuild/win32-x64@0.25.5':
     optional: true
 
+  '@evokegroup/ulid@1.3.1': {}
+
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -2383,6 +2471,12 @@ snapshots:
       - prettier
       - rollup
       - supports-color
+
+  '@jsr/std__ulid@1.0.0-rc.4': {}
+
+  '@jsr/yi__ulid@1.0.1': {}
+
+  '@kiosked/ulid@3.0.0': {}
 
   '@napi-rs/wasm-runtime@1.0.3':
     dependencies:
@@ -2559,6 +2653,18 @@ snapshots:
       prettier: 3.5.3
 
   '@types/semver@7.7.0': {}
+
+  '@ulid/browser@0.1.1-alpha.3.0': {}
+
+  '@ulid/node@0.1.1-alpha.3.0': {}
+
+  '@ulid/shared@0.1.1-alpha.3.0': {}
+
+  '@ulid/ulid@0.1.1-alpha.3.0':
+    dependencies:
+      '@ulid/browser': 0.1.1-alpha.3.0
+      '@ulid/node': 0.1.1-alpha.3.0
+      '@ulid/shared': 0.1.1-alpha.3.0
 
   '@vitest/expect@3.2.3':
     dependencies:
@@ -2769,6 +2875,8 @@ snapshots:
       node-stream-zip: 1.15.0
       semiver: 1.1.0
 
+  layerr@3.0.0: {}
+
   lodash.debounce@4.0.8: {}
 
   lodash.hasin@4.5.2: {}
@@ -2968,6 +3076,16 @@ snapshots:
 
   typescript@5.8.3: {}
 
+  ulid-generator@0.9.0(patch_hash=ec3d2ddf5639782fa38ab9f2f44a03d10bd7723c0c6425d0ab7c4dc89b33c343): {}
+
+  ulid-workers@2.1.0: {}
+
+  ulid@3.0.1: {}
+
+  ulidx@2.4.1:
+    dependencies:
+      layerr: 3.0.0
+
   undici-types@5.26.5: {}
 
   unicode-canonical-property-names-ecmascript@2.0.1: {}
@@ -3061,6 +3179,8 @@ snapshots:
       - terser
       - tsx
       - yaml
+
+  wa-ulid@1.0.0(patch_hash=a025c042e11ca07719780f89f62e1d5ad9fd6263de31868c85cd4fc398599b0b): {}
 
   why-is-node-running@2.3.0:
     dependencies:
