@@ -121,6 +121,31 @@ export const makeUlidBuffer = ({ ulidBuffer = makeEmptyUlidBuffer(), time = Date
 	return ulidBuffer
 }
 
+export const timeToUlidString = (time: number) => {
+	if (time > 0b1_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111)
+		throw Error(`ULID cannot represent a date more than 45 bits`)
+	
+	let result = ``
+
+	for (let offset = 50; offset;)
+		result += CROCKFORD_BASE32[(time / (2 ** (offset -= 5))) & 0b11111]
+
+	return result
+}
+
+export const ulidBufferRandomPartToUlidString = (ulidBuffer: UlidBuffer) => {
+	let result = ``
+	const dataView = new DataView(ulidBuffer)
+
+	for (let bitOffset = 48; bitOffset < 123; bitOffset += 5) {
+		const byteOffset = Math.floor(bitOffset / 8)
+
+		result += CROCKFORD_BASE32[(dataView.getUint16(byteOffset) >> (11 - (bitOffset % 8))) & 0b1_1111]
+	}
+
+	return (result + CROCKFORD_BASE32[dataView.getUint8(15) & 0b1_1111]) as Ulid
+}
+
 const persistedUlidBuffer = makeEmptyUlidBuffer()
 
 /** Make a [ULID](https://github.com/ulid/spec#readme) string that's narrowed to a {@linkcode Ulid}. */
@@ -213,15 +238,15 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = ({ mitigateOverfl
 	return ({ ulidBuffer } = {}) => {
 		if (getUlidBufferTime(stateUlidBuffer) >= Date.now())
 			incrementUlidBuffer(stateUlidBuffer, { throwOnOverflow: true })
-else {
+		else {
 			makeUlidBuffer({ ulidBuffer: stateUlidBuffer })
 
-		if (mitigateOverflow)
-			stateUlidBytes[6]! &= 0b0111_1111
-}
+			if (mitigateOverflow)
+				stateUlidBytes[6]! &= 0b0111_1111
+		}
 
 		if (!ulidBuffer)
-		return cloneUlidBuffer(stateUlidBuffer)
+			return cloneUlidBuffer(stateUlidBuffer)
 
 		new Uint8Array(ulidBuffer).set(stateUlidBytes)
 
