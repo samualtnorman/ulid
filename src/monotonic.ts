@@ -1,4 +1,4 @@
-import { makeMonotonicallyIncrementingUlidBufferFunction, makeUlid as makeUlid_, type Ulid, type UlidBuffer } from "./default.ts"
+import { makeEmptyUlidBuffer, makeMonotonicallyIncrementingUlidBufferFunction, makeUlid as makeUlid_, type Ulid, type UlidBuffer } from "./default.ts"
 
 /**
  * A shared function used for generating monotonically incrementing {@linkcode UlidBuffer}s.
@@ -6,7 +6,9 @@ import { makeMonotonicallyIncrementingUlidBufferFunction, makeUlid as makeUlid_,
  * `UlidBuffer` may appear to "skip" if they call this function in between your code calling this function. If that's
  * fine with you, feel free to use this function out of convenience.
  */
-export const makeUlidBuffer: () => UlidBuffer = makeMonotonicallyIncrementingUlidBufferFunction()
+export const makeUlidBuffer = makeMonotonicallyIncrementingUlidBufferFunction()
+
+const persistedUlidBuffer = makeEmptyUlidBuffer()
 
 /**
  * A shared function used for generating monotonically incrementing {@linkcode Ulid}s.
@@ -14,7 +16,7 @@ export const makeUlidBuffer: () => UlidBuffer = makeMonotonicallyIncrementingUli
  * `Ulid` may appear to "skip" if they call this function in between your code calling this function. If that's
  * fine with you, feel free to use this function out of convenience.
  */
-export const makeUlid = (): Ulid => makeUlid_({ ulidBuffer: makeUlidBuffer() })
+export const makeUlid = (): Ulid => makeUlid_({ ulidBuffer: makeUlidBuffer({ ulidBuffer: persistedUlidBuffer }) })
 
 vitest: if (import.meta.vitest) {
 	const { bench } = import.meta.vitest

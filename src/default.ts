@@ -206,23 +206,26 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = ({ mitigateOverfl
 	 * JavaScript.
 	 */
 	mitigateOverflow: boolean
-}> = {}): () => UlidBuffer => {
-	let ulidBuffer: UlidBuffer
+}> = {}): (options?: LaxPartial<{ ulidBuffer: UlidBuffer }>) => UlidBuffer => {
+	const stateUlidBuffer = makeEmptyUlidBuffer()
+	const stateUlidBytes = new Uint8Array(stateUlidBuffer)
 
-	return () => {
-		if (ulidBuffer && getUlidBufferTime(ulidBuffer) >= Date.now()) {
-			incrementUlidBuffer(ulidBuffer, { throwOnOverflow: true })
-
-			return cloneUlidBuffer(ulidBuffer)
-		}
-
-		ulidBuffer = makeUlidBuffer()
-		setUlidBufferTime(ulidBuffer)
+	return ({ ulidBuffer } = {}) => {
+		if (getUlidBufferTime(stateUlidBuffer) >= Date.now())
+			incrementUlidBuffer(stateUlidBuffer, { throwOnOverflow: true })
+else {
+			makeUlidBuffer({ ulidBuffer: stateUlidBuffer })
 
 		if (mitigateOverflow)
-			(new Uint8Array(ulidBuffer))[6]! &= 0b0111_1111
+			stateUlidBytes[6]! &= 0b0111_1111
+}
 
-		return cloneUlidBuffer(ulidBuffer)
+		if (!ulidBuffer)
+		return cloneUlidBuffer(stateUlidBuffer)
+
+		new Uint8Array(ulidBuffer).set(stateUlidBytes)
+
+		return ulidBuffer
 	}
 }
 
