@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import type { LaxPartial } from "@samual/types"
 import { createConsola } from "consola"
-import { version } from "../../package.json"
-import { decodeUlid, getUlidBufferTime, isUlid, makeUlid, toUlidBuffer } from "../default"
+import * as packageJson from "../../package.json" with { type: "json" }
+import { decodeUlid, getUlidBufferTime, isUlid, makeUlid, toUlidBuffer } from "../default.ts"
 
 const consola = createConsola({ stdout: process.stderr })
 
@@ -55,7 +55,7 @@ try {
 	consola.debug(options)
 
 	if (commands[0] == `version` || options.has(`version`)) {
-		console.log(version)
+		console.log(packageJson.version)
 		process.exit()
 	}
 
