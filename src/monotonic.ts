@@ -35,7 +35,7 @@ vitest: if (import.meta.vitest) {
 		"ulid-workers": import(`ulid-workers`).then(({ ulidFactory }) => ulidFactory({ monotonic: true })),
 		"@kiosked/ulid": import(`@kiosked/ulid`).then(({ monotonicFactory }) => monotonicFactory()),
 		"ulid-generator": import(`ulid-generator`).then(({ ulid }) => ulid.bind(undefined, { monotonic: true }) as () => string),
-		"@std/ulid": import(`@std/ulid`).then(({ monotonicUlid }) => monotonicUlid),
+		"@std/ulid": import(`@std/ulid`).then(({ monotonicUlid }) => monotonicUlid)
 	} satisfies Record<string, Promise<() => string>>).map(async ([ name, promise ]): Promise<[ string, () => string ]> => [ name, await promise ]))
 
 	for (const [ name, makeUlid ] of toBenchmark) {
