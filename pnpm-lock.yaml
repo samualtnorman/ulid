@@ -74,6 +74,15 @@ importers:
       semver:
         specifier: ^7.7.2
         version: 7.7.2
+      tiny-ulid@0.1.1:
+        specifier: npm:tiny-ulid@0.1.1
+        version: tiny-ulid@0.1.1
+      tiny-ulid@0.1.2-5ba32b8:
+        specifier: npm:tiny-ulid@0.1.2-5ba32b8
+        version: tiny-ulid@0.1.2-5ba32b8
+      tiny-ulid@0.1.2-bb0c2bc:
+        specifier: npm:tiny-ulid@0.1.2-bb0c2bc
+        version: tiny-ulid@0.1.2-bb0c2bc
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -1488,6 +1497,21 @@ packages:
   terser@5.42.0:
     resolution: {integrity: sha512-UYCvU9YQW2f/Vwl+P0GfhxJxbUGLwd+5QrrGgLajzWAtC/23AX0vcise32kkP7Eu0Wu9VlzzHAXkLObgjQfFlQ==}
     engines: {node: '>=10'}
+    hasBin: true
+
+  tiny-ulid@0.1.1:
+    resolution: {integrity: sha512-PzWcndQI8hXswoXRd2qJegAged7+PCrF8e+lDB5EMXyULncMo3ygO8fUf9KbqQplOHywQ8o7nLvZk6LZYTe++w==}
+    engines: {node: ^20.10 || ^22 || >=24}
+    hasBin: true
+
+  tiny-ulid@0.1.2-5ba32b8:
+    resolution: {integrity: sha512-1h2pP1sTTRt7ioDwVfL/ldwDP0Is/zqgRaO29vqPHy3U21hA368kOpwpOMc1aJEOY3TAIDSARwLcAkaLmy0bLw==}
+    engines: {node: ^20.10 || ^22 || >=24}
+    hasBin: true
+
+  tiny-ulid@0.1.2-bb0c2bc:
+    resolution: {integrity: sha512-LHbkzf8CTSrOmyPiCdTHbSV2I2F1n+AfdfDiszmWDSeklxaqDWixO706UKDrDrFCb4esvTJrpuTTRgW1/6Gkjw==}
+    engines: {node: ^20.10 || ^22 || >=24}
     hasBin: true
 
   tinybench@2.9.0:
@@ -3088,6 +3112,21 @@ snapshots:
       acorn: 8.15.0
       commander: 2.20.3
       source-map-support: 0.5.21
+
+  tiny-ulid@0.1.1:
+    dependencies:
+      '@samual/types': 0.0.1
+      consola: 3.4.2
+
+  tiny-ulid@0.1.2-5ba32b8:
+    dependencies:
+      '@samual/types': 0.0.1
+      consola: 3.4.2
+
+  tiny-ulid@0.1.2-bb0c2bc:
+    dependencies:
+      '@samual/types': 0.0.1
+      consola: 3.4.2
 
   tinybench@2.9.0: {}
 

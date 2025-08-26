@@ -265,6 +265,9 @@ vitest: if (import.meta.vitest) {
 	})
 
 	const toBenchmark = await Promise.all(Object.entries({
+		"tiny-ulid@0.1.1": import("tiny-ulid@0.1.1").then(({ makeUlid }) => makeUlid),
+		"tiny-ulid@0.1.2-5ba32b8": import("tiny-ulid@0.1.2-5ba32b8").then(({ makeUlid }) => makeUlid),
+		"tiny-ulid@0.1.2-bb0c2bc": import("tiny-ulid@0.1.2-bb0c2bc").then(({ makeUlid }) => makeUlid),
 		"ulid": import(`ulid`).then(({ ulid }) => ulid),
 		"ulidx": import(`ulidx`).then(({ ulid }) => ulid),
 		"wa-ulid": import(`wa-ulid`).then(async ({ default: init, ulid }) => (await init(), ulid)),
