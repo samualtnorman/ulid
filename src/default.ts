@@ -268,7 +268,7 @@ vitest: if (import.meta.vitest) {
 		"ulid": import(`ulid`).then(({ ulid }) => ulid),
 		"ulidx": import(`ulidx`).then(({ ulid }) => ulid),
 		"wa-ulid": import(`wa-ulid`).then(async ({ default: init, ulid }) => (await init(), ulid)),
-		"ulid-workers": import(`ulid-workers`).then(({ ulidFactory }) => ulidFactory()),
+		"ulid-workers": import(`ulid-workers`).then(({ ulidFactory }) => ulidFactory({ monotonic: false })),
 		"@ulid/ulid": import(`@ulid/ulid`).then(({ ulid }) => ulid),
 		"@kiosked/ulid": import(`@kiosked/ulid`).then(({ ulid }) => ulid),
 		"@evokegroup/ulid": import(`@evokegroup/ulid`).then(({ ulid }) => ulid),
