@@ -2,7 +2,7 @@
 import type { LaxPartial } from "@samual/types"
 import { createConsola } from "consola"
 import * as packageJson from "../../package.json" with { type: "json" }
-import { decodeUlid, getUlidBufferTime, isUlid, makeUlid, toUlidBuffer } from "../default.ts"
+import { decodeUlid, getUlidBufferTime, isUlid, makeUlid, toUlidBuffer } from "../default"
 
 const consola = createConsola({ stdout: process.stderr })
 

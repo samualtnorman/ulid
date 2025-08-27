@@ -7,7 +7,6 @@
 		"types": [ "node", "@total-typescript/ts-reset", "vitest/importMeta", "babel-plugin-here/env" ],
 		"lib": [ "dom", "ES2023" ],
 		"checkJs": false,
-		"allowImportingTsExtensions": true,
 		"rootDir": "."
 	}
 }

@@ -1,5 +1,5 @@
-import { makeUlid } from "./src/default.ts"
-import * as Monotonic from "./src/monotonic.ts"
+import { makeUlid } from "./dist/default.js"
+import * as Monotonic from "./dist/monotonic.js"
 
 declare const button: HTMLButtonElement
 declare const monotonicButton: HTMLButtonElement

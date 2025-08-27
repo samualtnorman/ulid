@@ -1,4 +1,4 @@
-import { makeMonotonicallyIncrementingUlidBufferFunction, type Ulid, type UlidBuffer } from "./default.ts"
+import { makeMonotonicallyIncrementingUlidBufferFunction, type Ulid, type UlidBuffer } from "./default"
 
 /**
  * A shared function used for generating monotonically incrementing {@linkcode UlidBuffer}s.
