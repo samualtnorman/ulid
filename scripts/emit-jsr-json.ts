@@ -1,8 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node --experimental-strip-types
 import { mkdirSync as makeDirectorySync, writeFileSync } from "fs"
 import packageJson from "../package.json" with { type: "json" }
 
-/** @type {Record<string, string>} */ const ConvertToJsr = {
+const ConvertToJsr: Record<string, string> = {
 	"@samual/types": "@samual/types"
 }
 
@@ -11,7 +11,7 @@ const { version, license, dependencies } = packageJson
 makeDirectorySync("dist", { recursive: true })
 
 const imports = Object.fromEntries(Object.entries(dependencies).map(
-	([ name, version ],) => [ name, `${name in ConvertToJsr ? `jsr:${ConvertToJsr[name]}` : `npm:${name}`}@${version}` ]
+	([ name, version ]) => [ name, `${name in ConvertToJsr ? `jsr:${ConvertToJsr[name]}` : `npm:${name}`}@${version}` ]
 ))
 
 writeFileSync("dist/jsr.json", JSON.stringify(
