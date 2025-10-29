@@ -56,7 +56,7 @@ This package is at the time of writing the fastest way to generate ULIDs and abo
 
 <details>
 <summary>Details</summary>
-```
+<pre><code>
 name                        hz     min      max    mean     p75     p99    p995    p999      rme  samples
 tiny-ulid         2,577,373.38  0.0003   0.6821  0.0004  0.0004  0.0008  0.0014  0.0030   ±0.50%  1288687
 ulid                 41,593.96  0.0175  14.1989  0.0240  0.0192  0.0357  0.0379  0.0683  ±14.60%    20797
@@ -69,12 +69,13 @@ ulid-workers         40,168.52  0.0175  16.0449  0.0249  0.0196  0.0255  0.0305 
 ulid-generator      377,932.71  0.0021   2.5506  0.0026  0.0024  0.0030  0.0044  0.0067   ±4.48%   188967
 @std/ulid           537,650.20  0.0015   3.8004  0.0019  0.0017  0.0029  0.0035  0.0052   ±5.82%   269365
 @yi/ulid          2,042,408.77  0.0004   6.9220  0.0005  0.0005  0.0008  0.0009  0.0013   ±2.73%  1021205
-```
+</code></pre>
 </details>
 
 
 ### Monotonic Generation
-This package is 2.7x faster at generating monotonic ULIDs than the official package.
+This package is at the time writing the fastest way to generate monotonically incrementing ULIDs and about 2.7x faster
+than the official package.
 
 ```
 1.10x faster than ulid-generator
@@ -88,7 +89,7 @@ This package is 2.7x faster at generating monotonic ULIDs than the official pack
 
 <details>
 <summary>Details</summary>
-```
+<pre><code>
 name                        hz     min     max    mean     p75     p99    p995    p999     rme  samples
 tiny-ulid         5,927,058.21  0.0001  1.6997  0.0002  0.0002  0.0003  0.0003  0.0006  ±0.68%  2963530
 ulid              2,174,425.76  0.0003  0.2634  0.0005  0.0005  0.0006  0.0006  0.0032  ±0.48%  1087213
@@ -98,7 +99,7 @@ ulid-workers      2,603,224.62  0.0003  0.2014  0.0004  0.0004  0.0005  0.0006  
 @kiosked/ulid     3,164,119.08  0.0003  0.2095  0.0003  0.0003  0.0004  0.0005  0.0011  ±0.27%  1582060
 ulid-generator    5,370,603.62  0.0002  0.1349  0.0002  0.0002  0.0002  0.0002  0.0005  ±0.15%  2685302
 @std/ulid         3,091,482.32  0.0003  0.3658  0.0003  0.0003  0.0004  0.0005  0.0013  ±0.34%  1545742
-```
+</code></pre>
 </details>
 
 You can test these numbers for yourself by running `pnpm vitest bench --run`.
