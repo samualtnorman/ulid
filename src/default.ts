@@ -216,16 +216,15 @@ export const decodeUlid = (ulid: Ulid): UlidBuffer => {
 
 /** Increment the random part of the given {@linkcode UlidBuffer} by 1. */
 export const incrementUlidBuffer = (ulidBuffer: UlidBuffer, { throwOnOverflow = false }: LaxPartial<{ throwOnOverflow: boolean }> = {}): void => {
-	const dataView = new DataView(ulidBuffer)
+	const bytes = ulidBufferToBytes(ulidBuffer)
 
-	dataView.setBigUint64(8, dataView.getBigUint64(8) + 1n)
-
-	if (!dataView.getBigUint64(8)) {
-		dataView.setUint16(6, dataView.getUint16(6) + 1)
-
-		if (throwOnOverflow && !dataView.getUint16(6))
-			throw Error(`Overflow when incrementing ULID buffer`)
+	for (let index = 16; index > 6; index--) {
+		if (bytes[index] = bytes[index]! + 1)
+			return
 	}
+
+	if (throwOnOverflow)
+		throw Error(`Overflow when incrementing ULID buffer`)
 }
 
 export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array(16) as UlidBytes
@@ -272,32 +271,50 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = ({ mitigateOverfl
 }
 
 vitest: if (import.meta.vitest) {
-	const { bench } = import.meta.vitest
+	const { bench, describe } = import.meta.vitest
 
 	if (process.env.MODE != `benchmark`)
 		break vitest
 
-	bench(`tiny-ulid`, () => {
-		makeUlid()
-	})
-
-	const toBenchmark = await Promise.all(Object.entries({
-		"@sn/ulid@0.1.2-a2f5883": import("@sn/ulid@0.1.2-a2f5883").then(({ makeUlid }) => makeUlid),
-		"ulid": import(`ulid`).then(({ ulid }) => ulid),
-		"ulidx": import(`ulidx`).then(({ ulid }) => ulid),
-		"wa-ulid": import(`wa-ulid`).then(async ({ default: init, ulid }) => (await init(), ulid)),
-		"ulid-workers": import(`ulid-workers`).then(({ ulidFactory }) => ulidFactory({ monotonic: false })),
-		"@ulid/ulid": import(`@ulid/ulid`).then(({ ulid }) => ulid),
-		"@kiosked/ulid": import(`@kiosked/ulid`).then(({ ulid }) => ulid),
-		"@evokegroup/ulid": import(`@evokegroup/ulid`).then(({ ulid }) => ulid),
-		"ulid-generator": import(`ulid-generator`).then(({ ulid }) => ulid as () => string),
-		"@std/ulid": import(`@std/ulid`).then(({ ulid }) => ulid),
-		"@yi/ulid": import(`@yi/ulid`).then(({ generateULID }) => generateULID)
-	} satisfies Record<string, Promise<() => string>>).map(async ([ name, promise ]): Promise<[ string, () => string ]> => [ name, await promise ]))
-
-	for (const [ name, makeUlid ] of toBenchmark) {
-		bench(name, () => {
+	describe(`ULID generation`, async () => {
+		bench(`tiny-ulid`, () => {
 			makeUlid()
 		})
-	}
+
+		const toBenchmark = await Promise.all(Object.entries({
+			"@sn/ulid@0.1.2-a2f5883": import("@sn/ulid@0.1.2-a2f5883").then(({ makeUlid }) => makeUlid),
+			"ulid": import(`ulid`).then(({ ulid }) => ulid),
+			"ulidx": import(`ulidx`).then(({ ulid }) => ulid),
+			"wa-ulid": import(`wa-ulid`).then(async ({ default: init, ulid }) => (await init(), ulid)),
+			"ulid-workers": import(`ulid-workers`).then(({ ulidFactory }) => ulidFactory({ monotonic: false })),
+			"@ulid/ulid": import(`@ulid/ulid`).then(({ ulid }) => ulid),
+			"@kiosked/ulid": import(`@kiosked/ulid`).then(({ ulid }) => ulid),
+			"@evokegroup/ulid": import(`@evokegroup/ulid`).then(({ ulid }) => ulid),
+			"ulid-generator": import(`ulid-generator`).then(({ ulid }) => ulid as () => string),
+			"@std/ulid": import(`@std/ulid`).then(({ ulid }) => ulid),
+			"@yi/ulid": import(`@yi/ulid`).then(({ generateULID }) => generateULID)
+		} satisfies Record<string, Promise<() => string>>).map(async ([ name, promise ]): Promise<[ string, () => string ]> => [ name, await promise ]))
+
+		for (const [ name, makeUlid ] of toBenchmark) {
+			bench(name, () => {
+				makeUlid()
+			})
+		}
+	})
+
+	describe(`ULID buffer incrementing`, async () => {
+		const ulidBuffer = makeUlidBuffer()
+		
+		bench(`current`, () => {
+			incrementUlidBuffer(ulidBuffer, { throwOnOverflow: true })
+		})
+
+		await import(`@sn/ulid@0.1.2-a2f5883`).then(({ makeUlidBuffer, incrementUlidBuffer }) => {
+			const ulidBuffer = makeUlidBuffer()
+			
+			bench(`@sn/ulid@0.1.2-a2f5883`, () => {
+				incrementUlidBuffer(ulidBuffer, { throwOnOverflow: true })
+			})
+		})
+	})
 }
