@@ -6,6 +6,9 @@ const ULID_REGEX = /^[0-7][\dA-HJKMNP-TV-Z]{25}$/
 /** A 16-byte {@linkcode ArrayBuffer}. */
 export type UlidBuffer = Brand<ArrayBuffer, { readonly UlidBuffer: unique symbol }[`UlidBuffer`]>
 
+export type UlidBytes =
+	Brand<Uint8Array<UlidBuffer>, { readonly UlidBytes: unique symbol }[`UlidBytes`]>
+
 /** A valid [ULID](https://github.com/ulid/spec#readme) string. */
 export type Ulid = Brand<string, { readonly Ulid: unique symbol }[`Ulid`]>
 
@@ -20,6 +23,18 @@ export const toUlidBuffer = (arrayBuffer: ArrayBuffer): UlidBuffer => {
 
 	throw Error(`ArrayBuffer's length was not 16`)
 }
+
+export const isUlidBytes =
+	(bytes: Uint8Array): bytes is UlidBytes => bytes.length == 16
+
+export const toUlidBytes = (bytes: UlidBytes): UlidBytes => {
+	if (isUlidBytes(bytes))
+		return bytes
+
+	throw Error(`Uint8Array's length was not 16`)
+}
+
+export const ulidBufferToBytes = (ulidBuffer: UlidBuffer): UlidBytes => new Uint8Array(ulidBuffer) as UlidBytes
 
 /** Check if the given string is a valid [ULID](https://github.com/ulid/spec#readme), if so narrow it to a {@linkcode Ulid}. */
 export const isUlid = (string: string): string is Ulid => ULID_REGEX.test(string)
@@ -212,6 +227,8 @@ export const incrementUlidBuffer = (ulidBuffer: UlidBuffer, { throwOnOverflow = 
 			throw Error(`Overflow when incrementing ULID buffer`)
 	}
 }
+
+export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array(16) as UlidBytes
 
 /** Clone a {@linkcode UlidBuffer}. */
 export const cloneUlidBuffer = (ulidBuffer: UlidBuffer): UlidBuffer => ulidBuffer.slice() as UlidBuffer
