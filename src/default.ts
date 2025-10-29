@@ -230,7 +230,13 @@ export const incrementUlidBuffer = (ulidBuffer: UlidBuffer, { throwOnOverflow = 
 export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array(16) as UlidBytes
 
 /** Clone a {@linkcode UlidBuffer}. */
-export const cloneUlidBuffer = (ulidBuffer: UlidBuffer): UlidBuffer => ulidBuffer.slice() as UlidBuffer
+export const cloneUlidBuffer = (ulidBuffer: UlidBuffer): UlidBuffer => {
+	const clone = makeEmptyUlidBytes()
+
+	clone.set(new Uint8Array(ulidBuffer))
+
+	return clone.buffer
+}
 
 /**
  * Make a monotonically incrementing {@linkcode UlidBuffer} generation function. This means if you generate 2
@@ -314,6 +320,22 @@ vitest: if (import.meta.vitest) {
 			
 			bench(`@sn/ulid@0.1.2-a2f5883`, () => {
 				incrementUlidBuffer(ulidBuffer, { throwOnOverflow: true })
+			})
+		})
+	})
+
+	describe(`ULID buffer cloning`, async () => {
+		const ulidBuffer = makeUlidBuffer()
+
+		bench(`current`, () => {
+			cloneUlidBuffer(ulidBuffer)
+		})
+
+		await import(`@sn/ulid@0.1.2-a2f5883`).then(({ makeUlidBuffer, cloneUlidBuffer }) => {
+			const ulidBuffer = makeUlidBuffer()
+
+			bench(`@sn/ulid@0.1.2-a2f5883`, () => {
+				cloneUlidBuffer(ulidBuffer)
 			})
 		})
 	})
