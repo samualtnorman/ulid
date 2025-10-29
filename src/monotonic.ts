@@ -1,4 +1,4 @@
-import { cloneUlidBuffer, incrementUlidBuffer, makeEmptyUlidBuffer, makeUlidBuffer as makeUlidBufferOriginal, setUlidBufferTime, type Ulid, type UlidBuffer } from "./default.ts"
+import { cloneUlidBuffer, incrementUlidBuffer, makeEmptyUlidBuffer, makeUlidBuffer as makeUlidBufferOriginal, setUlidBufferTime, type Ulid, type UlidBuffer } from "./default"
 
 let lastGeneratedBuffer = false
 let stateTime = 0
