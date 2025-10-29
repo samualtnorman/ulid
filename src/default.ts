@@ -122,8 +122,8 @@ export const makeUlidBuffer = ({ ulidBuffer = makeEmptyUlidBuffer(), time = Date
 }
 
 export const timeToUlidString = (time: number) => {
-	if (time > 0b1_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111)
-		throw Error(`ULID cannot represent a date more than 45 bits`)
+	if (time > 0b1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111)
+		throw Error(`ULID cannot represent a date more than 48 bits`)
 
 	let result = ``
 
