@@ -103,6 +103,8 @@ ulid-generator    5,370,603.62  0.0002  0.1349  0.0002  0.0002  0.0002  0.0002  
 </details>
 
 You can test these numbers for yourself by running `pnpm vitest bench --run`.
+These types of benchmarks are also never apples to apples. All these packages have different bells and whistles. This
+benchmark is only relevant to you if you only care about fast ULID string generation and nothing else.
 
 ## Bundle Size
 This package is at the time of writing the third smallest way to generate ULIDs (in JavaScript).
