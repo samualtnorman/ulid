@@ -13,6 +13,6 @@ export default {
 				plugins: [ babelPluginSyntaxTypescript, babelPluginHere(), babelPluginVitest() ]
 			}),
 			enforce: "pre"
-		}
+		} as any
 	]
 } satisfies UserConfig

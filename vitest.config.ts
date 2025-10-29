@@ -13,6 +13,6 @@ export default {
 				plugins: [ babelPluginSyntaxTypescript, babelPluginHere() ]
 			}),
 			enforce: "pre"
-		}
+		} as any
 	]
 } satisfies ViteUserConfig
