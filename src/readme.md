@@ -38,7 +38,7 @@ console.log(`Created user with id ${makeUlid({ ulidBuffer: ulidBuffer })}`) // "
 ```
 
 ## Performance
-This package is at the time of writing the fastest way to generate ULIDs and about 61x faster than the
+This package is at the time of writing the fastest way to generate ULIDs (in JavaScript) and about 61x faster than the
 [official ulid package](https://www.npmjs.com/package/ulid).
 
 ```
@@ -74,8 +74,8 @@ ulid-generator      377,932.71  0.0021   2.5506  0.0026  0.0024  0.0030  0.0044 
 
 
 ### Monotonic Generation
-This package is at the time writing the fastest way to generate monotonically incrementing ULIDs and about 2.7x faster
-than the official package.
+This package is at the time writing the fastest way to generate monotonically incrementing ULIDs (in JavaScript) and
+about 2.7x faster than the official package.
 
 ```
 1.10x faster than ulid-generator
