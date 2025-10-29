@@ -75,6 +75,7 @@ export const makeUlid = (): Ulid => {
 
 		crypto.getRandomValues(new Uint8Array(stateUlidStringBytes.buffer, 10))
 
+		// Overflow mitigation
 		stateUlidStringBytes[10] = CROCKFORD_BASE32_CHAR_CODES[stateUlidStringBytes[10]! & 0xF]!
 
 		for (let index = 11; index < 26;)
