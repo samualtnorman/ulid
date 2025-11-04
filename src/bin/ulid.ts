@@ -2,7 +2,7 @@
 import type { LaxPartial } from "@samual/types"
 import { createConsola } from "consola"
 import * as packageJson from "../../package.json" with { type: "json" }
-import { decodeUlid, getUlidBufferTime, isUlid, makeUlid, toUlidBuffer } from "../default"
+import { decodeUlid, getUlidBufferTime, isUlid, makeUlid, toUlidBuffer, ulidBufferToString } from "../default"
 
 const consola = createConsola({ stdout: process.stderr })
 
@@ -243,7 +243,7 @@ try {
 
 			const ulidBuffer = toUlidBuffer(buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.length))
 
-			console.log(makeUlid({ ulidBuffer }))
+			console.log(ulidBufferToString(ulidBuffer))
 			process.exit()
 		}
 
@@ -277,7 +277,7 @@ try {
 
 			const ulidBuffer = toUlidBuffer(buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.length))
 
-			console.log(makeUlid({ ulidBuffer }))
+			console.log(ulidBufferToString(ulidBuffer))
 			process.exit()
 		}
 

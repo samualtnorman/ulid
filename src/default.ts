@@ -84,6 +84,16 @@ export const setUlidBufferTime = (buffer: UlidBuffer, time: number = Date.now())
 	dataView.setUint32(2, time)
 }
 
+
+export const setUlidBytesTime = (ulidBytes: UlidBytes, time = Date.now()): void => {
+	ulidBytes[0] = time / (2 ** 40)
+	ulidBytes[1] = time / (2 ** 32)
+	ulidBytes[2] = time >> 24
+	ulidBytes[3] = time >> 16
+	ulidBytes[4] = time >> 8
+	ulidBytes[5] = time
+}
+
 /**
  * Retrieve the time from a {@linkcode UlidBuffer}.
  * @example
@@ -136,6 +146,22 @@ export const makeUlidBuffer = ({ ulidBuffer = makeEmptyUlidBuffer(), time = Date
 	return ulidBuffer
 }
 
+export const setUlidBytesRandom = (ulidBytes: UlidBytes): void => {
+	if (!(poolOffset %= POOL_BYTE_SIZE))
+		crypto.getRandomValues(pool)
+
+	ulidBytes.set(pool.subarray(poolOffset, poolOffset += 10), 6)
+}
+
+export const makeUlidBytes = (): UlidBytes => {
+	const ulidBytes = makeEmptyUlidBytes()
+
+	setUlidBytesTime(ulidBytes)
+	setUlidBytesRandom(ulidBytes)
+
+	return ulidBytes
+}
+
 export const timeToUlidString = (time: number) => {
 	if (time > 0b1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111)
 		throw Error(`ULID cannot represent a date more than 48 bits`)
@@ -161,30 +187,33 @@ export const ulidBufferRandomPartToUlidString = (ulidBuffer: UlidBuffer) => {
 	return (result + CROCKFORD_BASE32[dataView.getUint8(15) & 0b1_1111]) as Ulid
 }
 
-const persistedUlidBuffer = makeEmptyUlidBuffer()
+const persistedUlidStringBytes = new Uint8Array(26)
+const textDecoder = new TextDecoder()
+const CROCKFORD_BASE32_CHAR_CODES = CROCKFORD_BASE32.split(``).map(char => char.charCodeAt(0))
+
+export const ulidBufferToString = (ulidBuffer: UlidBuffer): Ulid => {
+	const dataView = new DataView(ulidBuffer)
+
+	persistedUlidStringBytes[0] = CROCKFORD_BASE32_CHAR_CODES[dataView.getUint8(0) >> 5]!
+
+	for (let bitOffset = 3, index = 1; bitOffset < 123; bitOffset += 5)
+		persistedUlidStringBytes[index++] = CROCKFORD_BASE32_CHAR_CODES[(dataView.getUint16(Math.floor(bitOffset / 8)) >> (11 - (bitOffset % 8))) & 0b1_1111]!
+
+	persistedUlidStringBytes[25] = CROCKFORD_BASE32_CHAR_CODES[dataView.getUint8(15) & 0b1_1111]!
+
+	return textDecoder.decode(persistedUlidStringBytes) as Ulid
+}
+
+export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array(16) as UlidBytes
+
+const persistedUlidBytes = makeEmptyUlidBytes()
 
 /** Make a [ULID](https://github.com/ulid/spec#readme) string that's narrowed to a {@linkcode Ulid}. */
-export const makeUlid = ({ time = Date.now(), ulidBuffer = makeUlidBuffer({ time, ulidBuffer: persistedUlidBuffer }) }: LaxPartial<{
-	/** The {@linkcode UlidBuffer} to turn into a {@linkcode Ulid}. @default makeUlidBuffer() */ ulidBuffer: UlidBuffer
+export const makeUlid = (): Ulid => {
+	setUlidBytesTime(persistedUlidBytes)
+	setUlidBytesRandom(persistedUlidBytes)
 
-	/**
-	 * The time in milliseconds used when creating the default {@linkcode UlidBuffer} if you didn't pass in your own.
-	 *
-	 * This will have no affect if you passed in your own {@linkcode UlidBuffer}.
-	 * @default Date.now()
-	 */
-	time: number
-}> = {}): Ulid => {
-	const dataView = new DataView(ulidBuffer)
-	let result = CROCKFORD_BASE32[dataView.getUint8(0) >> 5]!
-
-	for (let bitOffset = 3; bitOffset < 123; bitOffset += 5) {
-		const byteOffset = Math.floor(bitOffset / 8)
-
-		result += CROCKFORD_BASE32[(dataView.getUint16(byteOffset) >> (11 - (bitOffset % 8))) & 0b1_1111]
-	}
-
-	return (result + CROCKFORD_BASE32[dataView.getUint8(15) & 0b1_1111]) as Ulid
+	return ulidBufferToString(persistedUlidBytes.buffer)
 }
 
 /** Turn a {@linkcode Ulid} back into an {@linkcode UlidBuffer}. */
@@ -226,8 +255,6 @@ export const incrementUlidBuffer = (ulidBuffer: UlidBuffer, { throwOnOverflow = 
 	if (throwOnOverflow)
 		throw Error(`Overflow when incrementing ULID buffer`)
 }
-
-export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array(16) as UlidBytes
 
 /** Clone a {@linkcode UlidBuffer}. */
 export const cloneUlidBuffer = (ulidBuffer: UlidBuffer): UlidBuffer => {
