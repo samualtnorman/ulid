@@ -1,5 +1,6 @@
 import type { Brand, LaxPartial } from "@samual/types"
 
+const Uint8Array_ = Uint8Array
 const CROCKFORD_BASE32 = `0123456789ABCDEFGHJKMNPQRSTVWXYZ`
 const ULID_REGEX = /^[0-7][\dA-HJKMNP-TV-Z]{25}$/
 
@@ -34,7 +35,7 @@ export const toUlidBytes = (bytes: UlidBytes): UlidBytes => {
 	throw Error(`Uint8Array's length was not 16`)
 }
 
-export const ulidBufferToBytes = (ulidBuffer: UlidBuffer): UlidBytes => new Uint8Array(ulidBuffer) as UlidBytes
+export const ulidBufferToBytes = (ulidBuffer: UlidBuffer): UlidBytes => new Uint8Array_(ulidBuffer) as UlidBytes
 
 /** Check if the given string is a valid [ULID](https://github.com/ulid/spec#readme), if so narrow it to a {@linkcode Ulid}. */
 export const isUlid = (string: string): string is Ulid => ULID_REGEX.test(string)
@@ -113,7 +114,7 @@ export const getUlidBufferTime = (buffer: UlidBuffer): number => {
 }
 
 const POOL_BYTE_SIZE = 10 * 256
-const pool = new Uint8Array(POOL_BYTE_SIZE)
+const pool = new Uint8Array_(POOL_BYTE_SIZE)
 let poolOffset = 0
 
 /**
@@ -140,7 +141,7 @@ export const makeUlidBuffer = ({ ulidBuffer = makeEmptyUlidBuffer(), time = Date
 	if (!poolOffset)
 		crypto.getRandomValues(pool)
 
-	new Uint8Array(ulidBuffer, 6).set(pool.slice(poolOffset, poolOffset += 10))
+	new Uint8Array_(ulidBuffer, 6).set(pool.slice(poolOffset, poolOffset += 10))
 	poolOffset %= POOL_BYTE_SIZE
 
 	return ulidBuffer
@@ -187,7 +188,7 @@ export const ulidBufferRandomPartToUlidString = (ulidBuffer: UlidBuffer) => {
 	return (result + CROCKFORD_BASE32[dataView.getUint8(15) & 0b1_1111]) as Ulid
 }
 
-const persistedUlidStringBytes = new Uint8Array(26)
+const persistedUlidStringBytes = new Uint8Array_(26)
 const textDecoder = new TextDecoder()
 const CROCKFORD_BASE32_CHAR_CODES = CROCKFORD_BASE32.split(``).map(char => char.charCodeAt(0))
 
@@ -204,7 +205,7 @@ export const ulidBufferToString = (ulidBuffer: UlidBuffer): Ulid => {
 	return textDecoder.decode(persistedUlidStringBytes) as Ulid
 }
 
-export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array(16) as UlidBytes
+export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array_(16) as UlidBytes
 
 const persistedUlidBytes = makeEmptyUlidBytes()
 
@@ -219,7 +220,7 @@ export const makeUlid = (): Ulid => {
 /** Turn a {@linkcode Ulid} back into an {@linkcode UlidBuffer}. */
 export const decodeUlid = (ulid: Ulid): UlidBuffer => {
 	const ulidBuffer = makeUlidBuffer()
-	const bytes = new Uint8Array(ulidBuffer)
+	const bytes = new Uint8Array_(ulidBuffer)
 
 	for (let bytesIndex = 0, ulidIndex = 0; bytesIndex < 15; bytesIndex++) {
 		bytes[bytesIndex] = (CROCKFORD_BASE32.indexOf(ulid[ulidIndex]!) << 5) |
@@ -260,7 +261,7 @@ export const incrementUlidBuffer = (ulidBuffer: UlidBuffer, { throwOnOverflow = 
 export const cloneUlidBuffer = (ulidBuffer: UlidBuffer): UlidBuffer => {
 	const clone = makeEmptyUlidBytes()
 
-	clone.set(new Uint8Array(ulidBuffer))
+	clone.set(new Uint8Array_(ulidBuffer))
 
 	return clone.buffer
 }
@@ -282,7 +283,7 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = ({ mitigateOverfl
 	mitigateOverflow: boolean
 }> = {}): (options?: LaxPartial<{ ulidBuffer: UlidBuffer }>) => UlidBuffer => {
 	const stateUlidBuffer = makeEmptyUlidBuffer()
-	const stateUlidBytes = new Uint8Array(stateUlidBuffer)
+	const stateUlidBytes = new Uint8Array_(stateUlidBuffer)
 
 	return ({ ulidBuffer } = {}) => {
 		if (getUlidBufferTime(stateUlidBuffer) >= Date.now())
@@ -297,7 +298,7 @@ export const makeMonotonicallyIncrementingUlidBufferFunction = ({ mitigateOverfl
 		if (!ulidBuffer)
 			return cloneUlidBuffer(stateUlidBuffer)
 
-		new Uint8Array(ulidBuffer).set(stateUlidBytes)
+		new Uint8Array_(ulidBuffer).set(stateUlidBytes)
 
 		return ulidBuffer
 	}
