@@ -207,14 +207,31 @@ export const ulidBufferToString = (ulidBuffer: UlidBuffer): Ulid => {
 
 export const makeEmptyUlidBytes = (): UlidBytes => new Uint8Array_(16) as UlidBytes
 
-const persistedUlidBytes = makeEmptyUlidBytes()
+const MAKE_ULID_POOL_SIZE = 16 * 256
+const makeUlidPool = new Uint8Array_(MAKE_ULID_POOL_SIZE)
+let makeUlidPoolOffset = 0
 
 /** Make a [ULID](https://github.com/ulid/spec#readme) string that's narrowed to a {@linkcode Ulid}. */
 export const makeUlid = (): Ulid => {
-	setUlidBytesTime(persistedUlidBytes)
-	setUlidBytesRandom(persistedUlidBytes)
+	const time = Date.now()
 
-	return ulidBufferToString(persistedUlidBytes.buffer)
+	persistedUlidStringBytes[0] = CROCKFORD_BASE32_CHAR_CODES[(time / (2 ** 45)) & 0x1F]!
+	persistedUlidStringBytes[1] = CROCKFORD_BASE32_CHAR_CODES[(time / (2 ** 40)) & 0x1F]!
+	persistedUlidStringBytes[2] = CROCKFORD_BASE32_CHAR_CODES[(time / (2 ** 35)) & 0x1F]!
+	persistedUlidStringBytes[3] = CROCKFORD_BASE32_CHAR_CODES[(time / (2 ** 30)) & 0x1F]!
+
+	for (let index = 4, offset = 30; index < 10;)
+		persistedUlidStringBytes[index++] = CROCKFORD_BASE32_CHAR_CODES[(time >> (offset -= 5)) & 0x1F]!
+
+	if (!(makeUlidPoolOffset %= MAKE_ULID_POOL_SIZE))
+		crypto.getRandomValues(makeUlidPool)
+
+	persistedUlidStringBytes.set(makeUlidPool.subarray(makeUlidPoolOffset, makeUlidPoolOffset += 16), 10)
+
+	for (let index = 10; index < 26;)
+		persistedUlidStringBytes[index] = CROCKFORD_BASE32_CHAR_CODES[persistedUlidStringBytes[index++]! & 0x1F]!
+
+	return textDecoder.decode(persistedUlidStringBytes) as Ulid
 }
 
 /** Turn a {@linkcode Ulid} back into an {@linkcode UlidBuffer}. */
