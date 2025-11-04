@@ -41,9 +41,9 @@ importers:
       '@samual/rolldown-config':
         specifier: jsr:0.0.1-876b675
         version: '@jsr/samual__rolldown-config@0.0.1-876b675(prettier@3.6.2)(rollup@4.52.5)'
-      '@sn/ulid@0.1.2-a2f5883':
-        specifier: jsr:@sn/ulid@0.1.2-a2f5883
-        version: '@jsr/sn__ulid@0.1.2-a2f5883'
+      '@sn/ulid@previous':
+        specifier: jsr:@sn/ulid@0.1.2-209ddfe
+        version: '@jsr/sn__ulid@0.1.2-209ddfe'
       '@std/ulid':
         specifier: jsr:1.0.0-rc.4
         version: '@jsr/std__ulid@1.0.0-rc.4'
@@ -813,8 +813,8 @@ packages:
   '@jsr/samual__types@0.0.1':
     resolution: {integrity: sha512-MMsJ3zb1NhG/jkGu51Bt0k2wScl6cw/8Qih1rpRkCcPajUkBqKHP8q4jz3HnXX5P0Ci9BPSjwIVDWFOoMNo9fQ==, tarball: https://npm.jsr.io/~/11/@jsr/samual__types/0.0.1.tgz}
 
-  '@jsr/sn__ulid@0.1.2-a2f5883':
-    resolution: {integrity: sha512-EunWtvlVkQr8U9eo7F686hxboOdt8yC0j6SOjk40vkxq1I+UyyWfWutRi9on7UuYTF9G0Y8Z1EHYJOr+SI9A9g==, tarball: https://npm.jsr.io/~/11/@jsr/sn__ulid/0.1.2-a2f5883.tgz}
+  '@jsr/sn__ulid@0.1.2-209ddfe':
+    resolution: {integrity: sha512-y2yE13YuO4Kl1FVMYvOhNadA6AlMDHlkFXiuobEz9p2FcUbm+YMkWneDkofAbDeG1877b2vok4dXa3AC0KGhwA==, tarball: https://npm.jsr.io/~/11/@jsr/sn__ulid/0.1.2-209ddfe.tgz}
 
   '@jsr/std__ulid@1.0.0-rc.4':
     resolution: {integrity: sha512-dJPkGZitKk31EOSyP64SAlTXdGPlzu4CXOBIYwq+0zSeATGMjB4ZVgGjrUqUp/YZEUah6XwX1WLc9krGHqQjPw==, tarball: https://npm.jsr.io/~/11/@jsr/std__ulid/1.0.0-rc.4.tgz}
@@ -2435,7 +2435,7 @@ snapshots:
 
   '@jsr/samual__types@0.0.1': {}
 
-  '@jsr/sn__ulid@0.1.2-a2f5883':
+  '@jsr/sn__ulid@0.1.2-209ddfe':
     dependencies:
       '@jsr/samual__types': 0.0.1
 

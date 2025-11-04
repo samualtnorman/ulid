@@ -186,7 +186,7 @@ vitest: if (import.meta.vitest) {
 	})
 
 	const toBenchmark = await Promise.all(Object.entries({
-		"@sn/ulid@0.1.2-a2f5883": import("@sn/ulid@0.1.2-a2f5883/monotonic").then(({ makeUlid }) => makeUlid),
+		"@sn/ulid@previous": import("@sn/ulid@previous/monotonic").then(({ makeUlid }) => makeUlid),
 		"ulid": import(`ulid`).then(({ monotonicFactory }) => monotonicFactory()),
 		"ulidx": import(`ulidx`).then(({ monotonicFactory }) => monotonicFactory()),
 		"wa-ulid": import(`wa-ulid`).then(async ({ default: init, monotonicFactory }) => (await init(), monotonicFactory())),

@@ -315,7 +315,7 @@ vitest: if (import.meta.vitest) {
 		})
 
 		const toBenchmark = await Promise.all(Object.entries({
-			"@sn/ulid@0.1.2-a2f5883": import("@sn/ulid@0.1.2-a2f5883").then(({ makeUlid }) => makeUlid),
+			"@sn/ulid@previous": import("@sn/ulid@previous").then(({ makeUlid }) => makeUlid),
 			"ulid": import(`ulid`).then(({ ulid }) => ulid),
 			"ulidx": import(`ulidx`).then(({ ulid }) => ulid),
 			"wa-ulid": import(`wa-ulid`).then(async ({ default: init, ulid }) => (await init(), ulid)),
@@ -342,10 +342,10 @@ vitest: if (import.meta.vitest) {
 			incrementUlidBuffer(ulidBuffer, { throwOnOverflow: true })
 		})
 
-		await import(`@sn/ulid@0.1.2-a2f5883`).then(({ makeUlidBuffer, incrementUlidBuffer }) => {
+		await import(`@sn/ulid@previous`).then(({ makeUlidBuffer, incrementUlidBuffer }) => {
 			const ulidBuffer = makeUlidBuffer()
 			
-			bench(`@sn/ulid@0.1.2-a2f5883`, () => {
+			bench(`@sn/ulid@previous`, () => {
 				incrementUlidBuffer(ulidBuffer, { throwOnOverflow: true })
 			})
 		})
@@ -358,10 +358,10 @@ vitest: if (import.meta.vitest) {
 			cloneUlidBuffer(ulidBuffer)
 		})
 
-		await import(`@sn/ulid@0.1.2-a2f5883`).then(({ makeUlidBuffer, cloneUlidBuffer }) => {
+		await import(`@sn/ulid@previous`).then(({ makeUlidBuffer, cloneUlidBuffer }) => {
 			const ulidBuffer = makeUlidBuffer()
 
-			bench(`@sn/ulid@0.1.2-a2f5883`, () => {
+			bench(`@sn/ulid@previous`, () => {
 				cloneUlidBuffer(ulidBuffer)
 			})
 		})
